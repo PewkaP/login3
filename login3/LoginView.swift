@@ -20,10 +20,10 @@ struct LoginView: View {
     @State private var password: String = ""
     @State private var animateEllipses = false
     @State private var loginSuccess = false
+    @State private var shouldShowLoginAlert: Bool = false
+
     @State private var userID: Int32 = 0
     var body: some View {
-        
-        NavigationView {
             ZStack(alignment: .topLeading) {
                 VStack(spacing: 40) {
                     ZStack {
@@ -51,26 +51,26 @@ struct LoginView: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.leading, 20)
                     }
-                    
-                    VStack(spacing: 30) {
+                    NavigationView {
                         VStack(spacing: 30) {
-                            CustomTextField(placeHolder: "Email", imageName: "envelope", bColor: "textColor1", tOpacity: 0.6, value: $email)
-                            CustomTextField(placeHolder: "Password", imageName: "lock", bColor: "textColor1", tOpacity: 0.6, value: $password)
-                        }
-                        
-                        VStack {
+                            VStack(spacing: 30) {
+                                CustomTextField(placeHolder: "Email", imageName: "envelope", bColor: "textColor1", tOpacity: 0.6, value: $email)
+                                CustomTextField(placeHolder: "Password", imageName: "lock", bColor: "textColor1", tOpacity: 0.6, value: $password)
+                            }
                             Text("Forgot Password")
                                 .fontWeight(.medium)
-                            Button(action:{
-                                Login()
-                            }) {
+                            NavigationLink(destination: LogginedView(userID: $userID), isActive: self.$loginSuccess) {
+                                
                                 CustomButton(title: "LOG IN", bgColor: "color1")
+                                    .onTapGesture {
+                                        Login()
+                                    }
                             }
-                            NavigationLink(destination: LogginedView(userID: $userID), isActive: $loginSuccess) {
-                                EmptyView()
+                            .navigationBarTitle("Login Screen")
+                            .alert(isPresented: $shouldShowLoginAlert) {
+                                Alert(title: Text("Email/Password incorrect"))
                             }
-        
-                        }.padding(.horizontal, 20)
+                        }
                     }
                 }
             }
@@ -78,32 +78,23 @@ struct LoginView: View {
                 animateEllipses = true
             }
         }
-    }
+    
     private func Login(){
         print("started")
         if let user = users.first(where: { $0.email == email }) {
-        
             userID=user.iduser
-            print(userID)
-//          print("user.email \(user.email) email \(email)")
             if let pass = passwords.first(where: { $0.fk_iduser == userID }) {
                 let passtemp = pass
-                print(passtemp.iduser_password)
                 if passtemp.password_valid==true && passtemp.fk_iduser==userID && passtemp.password_hashed==password{
                     print("success")
                     loginSuccess=true
-                }else{
-                    print("fail")
-                    loginSuccess=false
+                    print("\(loginSuccess)")
                 }
-            }else{
-                print("fail")
-                loginSuccess=false
             }
-        }else{
-            print("fail")
-            loginSuccess=false
         }
-        loginSuccess=false
+        if(loginSuccess != true){
+            shouldShowLoginAlert = true
+        }
+        
     }
 }

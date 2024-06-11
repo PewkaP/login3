@@ -14,13 +14,20 @@ struct LogginedView: View {
         sortDescriptors: [NSSortDescriptor(keyPath: \User.iduser, ascending: true)],
         animation: .default)
     private var users: FetchedResults<User>
+    @State private var angle: Angle = .degrees(0)
     @Binding var userID: Int32
     var body: some View {
         VStack{
             if let user = users.first(where: { $0.iduser == userID }) {
                 Text("Hello logged in user \(user.email ?? "Unknown")")
                 Image("Image\(userID)")
+                    .rotationEffect(angle)
+                          .gesture(RotationGesture()
+                            .onChanged { angle in
+                              self.angle = angle
+                            })
             }
+            
         }
         
         
