@@ -53,7 +53,7 @@ struct LoginView: View {
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .padding(.leading, 20)
                         }
-                        
+                        //---------------
                         VStack(spacing: 30) {
                             VStack(spacing: 30) {
                                 CustomTextField(placeHolder: "Email", imageName: "envelope", bColor: "textColor1", tOpacity: 0.6, value: $email)
@@ -61,17 +61,36 @@ struct LoginView: View {
                             }
                             Text("Forgot Password")
                                 .fontWeight(.medium)
-                            NavigationLink(destination: LogginedView(userID: $userID), isActive: self.$loginSuccess) {
-                                CustomButton(title: "LOG IN", bgColor: "color1")
-                                    .onTapGesture {
-                                        Login()
-                                    }
-                            }
-                            
-                            .alert(isPresented: $shouldShowLoginAlert) {
-                                Alert(title: Text("Email/Password incorrect"))
-                            }
+                            CustomButton(title: "LOG IN", bgColor: "color1")
+                                .onTapGesture {
+                                    Login()
+                                }
+                                .navigationDestination(isPresented: $loginSuccess){
+                                    LogginedView(userID: $userID)
+                                }
+                                .alert(isPresented: $shouldShowLoginAlert){
+                                    Alert(title: Text("Email/Password incorrect"))
+                                }
                         }
+                        //---------------
+//                        VStack(spacing: 30) {
+//                            VStack(spacing: 30) {
+//                                CustomTextField(placeHolder: "Email", imageName: "envelope", bColor: "textColor1", tOpacity: 0.6, value: $email)
+//                                CustomTextField(placeHolder: "Password", imageName: "lock", bColor: "textColor1", tOpacity: 0.6, value: $password)
+//                            }
+//                            Text("Forgot Password")
+//                                .fontWeight(.medium)
+//                            NavigationLink(destination: LogginedView(userID: $userID), isActive: self.$loginSuccess) {
+//                                CustomButton(title: "LOG IN", bgColor: "color1")
+//                                    .onTapGesture {
+//                                        Login()
+//                                    }
+//                            }
+//                            
+//                            .alert(isPresented: $shouldShowLoginAlert) {
+//                                Alert(title: Text("Email/Password incorrect"))
+//                            }
+//                        }
                     }
                 }
             }

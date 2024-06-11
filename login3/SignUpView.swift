@@ -80,16 +80,26 @@ struct SignUpView: View {
                                 CustomTextField(placeHolder: "Password", imageName: "lock", bColor: "textColor2", tOpacity: 1.0, value: $password)
                                 CustomTextField(placeHolder: "Confirm Password", imageName: "lock", bColor: "textColor2", tOpacity: 1.0, value: $cpassword)
                             }
-                            
-                            NavigationLink(destination: LogginedView(userID: $userID), isActive: self.$registrationSuccess) {
-                                CustomButton(title: "SIGN UP", bgColor: "color1")
-                                    .onTapGesture {
-                                        Register()
-                                    }
-                            }
-                            .alert(isPresented: $shouldShowLoginAlert) {
-                                Alert(title: Text("Email/Password incorrect"))
-                            }
+                        
+                            CustomButton(title: "SIGN UP", bgColor: "color1")
+                                .onTapGesture {
+                                    Register()
+                                }
+                                .navigationDestination(isPresented: $registrationSuccess){
+                                    LogginedView(userID: $userID)
+                                }
+                                .alert(isPresented: $shouldShowLoginAlert){
+                                    Alert(title: Text("Sorry, something went wrong..."))
+                                }
+//                            NavigationLink(destination: LogginedView(userID: $userID), isActive: self.$registrationSuccess) {
+//                                CustomButton(title: "SIGN UP", bgColor: "color1")
+//                                    .onTapGesture {
+//                                        Register()
+//                                    }
+//                            }
+//                            .alert(isPresented: $shouldShowLoginAlert) {
+//                                Alert(title: Text("Email/Password incorrect"))
+//                            }
                         }
                     }
                 }
