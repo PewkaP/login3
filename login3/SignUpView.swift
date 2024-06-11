@@ -1,13 +1,24 @@
-//
-//  SignUpView.swift
-//  Login
-//
-//  Created by student on 22.05.2024.
-//
-
 import SwiftUI
+import CoreData
 
 struct SignUpView: View {
+    // MARK: - Properties
+    
+    // Core Data context
+    @Environment(\.managedObjectContext) private var viewContext
+    
+    // Fetching users and passwords
+    @FetchRequest(
+        sortDescriptors: [NSSortDescriptor(keyPath: \User.iduser, ascending: true)],
+        animation: .default)
+    private var users: FetchedResults<User>
+
+    @FetchRequest(
+        sortDescriptors: [NSSortDescriptor(keyPath: \User_password.iduser_password, ascending: true)],
+        animation: .default)
+    private var passwords: FetchedResults<User_password>
+    
+    // State variables
     @State private var animateEllipses = false
     @State private var name: String = ""
     @State private var lastname: String = ""
@@ -17,32 +28,33 @@ struct SignUpView: View {
     @State private var zipcode: String = ""
     @State private var password: String = ""
     @State private var cpassword: String = ""
+    @State private var userID: Int32 = 0
+    @State private var registrationSuccess = false
+    @State private var shouldShowLoginAlert: Bool = false
+    
+    // MARK: - Body
     var body: some View {
-        ScrollView{
-                ZStack(alignment: .topLeading){
-                    VStack(spacing: 40){
-                        ZStack{
+        NavigationView {
+            ScrollView {
+                ZStack(alignment: .topLeading) {
+                    VStack(spacing: 40) {
+                        ZStack {
                             Ellipse()
                                 .frame(width: 510, height: 478)
                                 .padding(.leading, -200)
                                 .foregroundColor(Color("color2"))
-                                .padding(.top,-200)
+                                .padding(.top, -200)
                                 .offset(x: animateEllipses ? 0 : UIScreen.main.bounds.width)
-                            //                            .scaleEffect(animateEllipses ? 1 : 0.8)
-                            //                            .opacity(animateEllipses ? 1 : 0)
                                 .animation(.easeOut(duration: 1.0), value: animateEllipses)
                             
                             Ellipse()
                                 .frame(width: 458, height: 420)
                                 .padding(.trailing, -500)
                                 .foregroundColor(Color("color1"))
-                                .padding(.top,-200)
+                                .padding(.top, -200)
                                 .offset(x: animateEllipses ? 0 : -UIScreen.main.bounds.width)
-                            //                            .scaleEffect(animateEllipses ? 1 : 0.8)
-                            //                            .opacity(animateEllipses ? 1 : 0)
                                 .animation(.easeOut(duration: 1.0), value: animateEllipses)
-                            
-                            
+                    
                             Text("Welcome \nBack")
                                 .foregroundColor(.white)
                                 .font(.system(size: 35))
@@ -50,12 +62,15 @@ struct SignUpView: View {
                                 .multilineTextAlignment(.leading)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .padding(.leading,20)
-                        }.onAppear {
+                        }
+                        .onAppear {
                             animateEllipses = true
-                        }//ZStack
-                        
-                        VStack(spacing: 30){
-                            VStack(spacing: 30){
+                        }
+                
+                    
+                        VStack(spacing: 30) {
+                            VStack {
+                                
                                 CustomTextField(placeHolder: "Name", imageName: "person.fill", bColor: "textColor2", tOpacity: 1.0, value: $name)
                                 CustomTextField(placeHolder: "Lastname", imageName: "person.fill", bColor: "textColor2", tOpacity: 1.0, value: $lastname)
                                 CustomTextField(placeHolder: "Email", imageName: "envelope", bColor: "textColor2", tOpacity: 1.0, value: $email)
@@ -64,75 +79,98 @@ struct SignUpView: View {
                                 CustomTextField(placeHolder: "Zipcode", imageName: "mappin.square.fill", bColor: "textColor2", tOpacity: 1.0, value: $zipcode)
                                 CustomTextField(placeHolder: "Password", imageName: "lock", bColor: "textColor2", tOpacity: 1.0, value: $password)
                                 CustomTextField(placeHolder: "Confirm Password", imageName: "lock", bColor: "textColor2", tOpacity: 1.0, value: $cpassword)
-                            }//VStack(spacing: 30)
+                            }
                             
-                            VStack{
-                                Button(action:{},label:{
-                                    CustomButton(title: "SIGN UP", bgColor:"color1")
-                                })
-                            }.padding(.horizontal,20)//VStack
-                        }//VStack(spacing: 30)
-                    }//VStack(spacing: 40)
-                }//ZStack(alignment: .topLeading)
-        }//ScrollView
-    }//var body: some View
-}//struct SignUpView: View
+                            NavigationLink(destination: LogginedView(userID: $userID), isActive: self.$registrationSuccess) {
+                                CustomButton(title: "SIGN UP", bgColor: "color1")
+                                    .onTapGesture {
+                                        Register()
+                                    }
+                            }
+                            .alert(isPresented: $shouldShowLoginAlert) {
+                                Alert(title: Text("Email/Password incorrect"))
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
 
-#Preview {
-    SignUpView()
+    // MARK: - Methods
+    
+    // Register user
+    private func Register() {
+        shouldShowLoginAlert = false
+        
+        // Check if user already exists
+        if let user = users.first(where: { $0.email == email }) {
+            shouldShowLoginAlert = true
+            print("user exist")
+            return
+        }
+        
+        // Check if passwords match
+        if password != cpassword {
+            print("passwords incorrect")
+            shouldShowLoginAlert = true
+            return
+        }
+        
+        // Create new user
+        var newUser = User(context: viewContext)
+        userID = Int32(users.count+1)
+        newUser.iduser = userID
+        newUser.name = name
+        newUser.lastname = lastname
+        newUser.email = email
+        newUser.fk_iduser_type = 1
+        newUser.phonenumber = Int64(phonenumber)!
+        newUser.street = street
+        newUser.zipcode = zipcode
+        newUser.fk_idcity = 1
+        newUser.fk_idloyal_card = Int32(users.count+1)
+        print("user: \(newUser.iduser) \(String(describing: newUser.name)) \(String(describing: newUser.lastname)) \(String(describing: newUser.email)) \(newUser.phonenumber) \(String(describing: newUser.street)) \(String(describing: newUser.zipcode)) \(newUser.fk_idloyal_card) ")
+        // Save user
+        do {
+            print("creating user")
+            try viewContext.save()
+        } catch {
+            print("creating user fail")
+            shouldShowLoginAlert = true
+            let nsError = error as NSError
+            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+        }
+        
+        // Create new password
+        var newPass = User_password(context: viewContext)
+        newPass.iduser_password = Int32(passwords.count+1)
+        newPass.fk_iduser = newUser.iduser
+        newPass.password_hashed = password
+        newPass.password_changed_date = Date()
+        newPass.password_valid = true
+        print("password: \(newPass.iduser_password) \(newPass.fk_iduser) \(String(describing: newPass.password_hashed)) \(String(describing: newPass.password_changed_date)) \(newPass.password_valid) ")
+        // Save password
+        do {
+            print("creating password")
+            try viewContext.save()
+        } catch {
+            print("creating password fail")
+            shouldShowLoginAlert = true
+            let nsError = error as NSError
+            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+        }
+        print("everything should be fine")
+        registrationSuccess=true
+    }
 }
-//
-//NavigationView{
-//    ZStack(alignment: .topLeading){
-//        Color("color1").ignoresSafeArea()
-//        VStack{
-//            VStack(spacing: 40){
-//                ZStack{
-//                    Ellipse()
-//                        .frame(width: 458, height: 420)
-//                        .padding(.trailing, -500)
-//                        .foregroundColor(Color("color2"))
-//                        .padding(.top, -200)
-//                    Text("Create Account")
-//                        .foregroundColor(.white)
-//                        .font(.system(size: 35))
-//                        .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
-//                        .multilineTextAlignment(.leading)
-//                        .frame(maxWidth: .infinity, alignment: .leading)
-//                        .padding(.leading, 20)
-//                        .padding(.top, 100)
-//                }
-//                VStack (spacing: 30){
-//                    VStack (spacing: 30){
-//                        CustomTextField(placeHolder:"Email",imageName:"envelope",bColor:"textColor1",tOpacity: 0.6,value:$email)
-//                        CustomTextField(placeHolder:"Password",imageName:"lock",bColor:"textColor1",tOpacity: 0.6,value:$password)
-//                    }
-//                    VStack(alignment: .trailing){
-//                        Button(action: {}, label:{
-//                            CustomButton(title: "SIGN IN", bgColor: "color1")
-//                        })
-//                    }.padding(.horizontal, 20)
-//                }
-//            }
-//            Spacer()
-//            HStack{
-//                Text("Already have an account?")
-//                    .fontWeight(.bold)
-//                    .foregroundColor(.white)
-//                    .font(.system(size: 18))
-//                Button(action: {}, label:{
-//                    Text("SIGN IN")
-//                        .font(.system(size: 18))
-//                        .foregroundColor(Color("color1"))
-//                        .fontWeight(.bold)
-//                })
-//            }.frame(height: 63)
-//            .frame(minWidth: 0, maxWidth: .infinity)
-//            .background(Color("color2"))
-//            .ignoresSafeArea()
-//        }
-//
-//    }.edgesIgnoringSafeArea(.bottom)
-//}
-//
-//
+
+// MARK: - Preview
+#if DEBUG
+struct SignUpView_Previews: PreviewProvider {
+    static var previews: some View {
+        SignUpView()
+    }
+}
+#endif
