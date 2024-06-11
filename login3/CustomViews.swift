@@ -11,8 +11,21 @@ import SwiftUI
 
 #Preview {
     CustomTextField(placeHolder: "lorem", imageName: "person.fill", bColor: "textColor1", tOpacity: 1.0, value: .constant(""))
+    
 }
-
+struct ContencikView: View {
+    @State private var selectedOption = ""
+    let options = ["Option 1", "Option 2", "Option 3"]
+    
+    var body: some View {
+        VStack {
+            
+            CustomPicker(placeHolder: "Select an option", imageName: "list.bullet", bColor: "gray", tOpacity: 1.0, selection: $selectedOption, options: options)
+            CustomTextField(placeHolder: "Name", imageName: "person", bColor: "gray", tOpacity: 1.0, value: $selectedOption)
+        }
+        .padding()
+    }
+}
 struct CustomTextField: View {
     
     var placeHolder: String
@@ -29,36 +42,28 @@ struct CustomTextField: View {
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 20, height:20)
                 .padding(.leading, 20)
-                //.foregroundColor(Color(bColor).opacity(tOpacity))
             
-            if placeHolder == "Password" || placeHolder == "Confirm PassWord"{
+            if placeHolder == "Password" || placeHolder == "Confirm Password"{
                 ZStack(alignment: .leading){
                     if value.isEmpty{
                         Text(placeHolder)
-                            //.foregroundColor(Color(bColor).opacity(tOpacity))
                             .padding(.leading,12)
                             .font(.system(size: 20))
                     }
-                    
                     SecureField("", text: $value)
                         .padding(.leading,12)
                         .font(.system(size:20))
                         .frame(height: 45)
-                    
                 }
             }
             
             else {
                 ZStack(alignment: .leading) {
-                
-                
                     if value.isEmpty{
                         Text(placeHolder)
-                            //.foregroundColor(Color(bColor).opacity(tOpacity))
                             .padding(.leading,12)
                             .font(.system(size: 20))
                     }
-                    
                     TextField("",text: $value)
                         .padding(.leading,12)
                         .font(.system(size:20))
@@ -66,16 +71,11 @@ struct CustomTextField: View {
                 }
             }
         }
-        
-        .overlay(
-            Divider()
-                .overlay(
-                    Color(bColor).opacity(tOpacity)
-                ).padding(.horizontal,20), alignment: .bottom
-        )
+        .overlay(Divider()
+                    .overlay(Color(bColor).opacity(tOpacity))
+                    .padding(.horizontal,20), alignment: .bottom)
     }
 }
-
 
 struct CustomButton: View {
     var title: String
@@ -91,3 +91,4 @@ struct CustomButton: View {
         
     }
 }
+

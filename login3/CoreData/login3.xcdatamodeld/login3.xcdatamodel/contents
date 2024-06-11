@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22522" systemVersion="23F79" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Cities" representedClassName="Cities" syncable="YES">
+        <attribute name="city" optional="YES" attributeType="String"/>
+        <attribute name="fk_idcountry" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="idcity" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="toCountries" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Countries" inverseName="toCities" inverseEntity="Countries"/>
+        <relationship name="toUser" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="toCities" inverseEntity="User"/>
+    </entity>
+    <entity name="Countries" representedClassName="Countries" syncable="YES">
+        <attribute name="idcountry" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="name_country" optional="YES" attributeType="String"/>
+        <relationship name="toCities" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Cities" inverseName="toCountries" inverseEntity="Cities"/>
+    </entity>
     <entity name="User" representedClassName="User" syncable="YES">
         <attribute name="email" optional="YES" attributeType="String"/>
         <attribute name="fk_idcity" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
@@ -11,7 +23,9 @@
         <attribute name="phonenumber" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="street" optional="YES" attributeType="String"/>
         <attribute name="zipcode" optional="YES" attributeType="String"/>
+        <relationship name="toCities" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Cities" inverseName="toUser" inverseEntity="Cities"/>
         <relationship name="toPass" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User_password" inverseName="toUser" inverseEntity="User_password"/>
+        <relationship name="toTypes" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User_type" inverseName="toUser" inverseEntity="User_type"/>
     </entity>
     <entity name="User_password" representedClassName="User_password" syncable="YES">
         <attribute name="fk_iduser" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
@@ -20,5 +34,10 @@
         <attribute name="password_hashed" optional="YES" attributeType="String"/>
         <attribute name="password_valid" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <relationship name="toUser" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="toPass" inverseEntity="User"/>
+    </entity>
+    <entity name="User_type" representedClassName="User_type" syncable="YES">
+        <attribute name="iduser_type" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="name_type" optional="YES" attributeType="String"/>
+        <relationship name="toUser" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="toTypes" inverseEntity="User"/>
     </entity>
 </model>

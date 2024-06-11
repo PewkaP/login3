@@ -24,6 +24,12 @@
 		2445824B2C0F76CB008A6FBB /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2445824A2C0F76CB008A6FBB /* SignUpView.swift */; };
 		2445824D2C0F76F3008A6FBB /* CustomViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2445824C2C0F76F2008A6FBB /* CustomViews.swift */; };
 		2445824F2C0F770C008A6FBB /* LogginedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2445824E2C0F770C008A6FBB /* LogginedView.swift */; };
+		24C2F0102C18BA2B008E533B /* Countries+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24C2F00A2C18BA2B008E533B /* Countries+CoreDataClass.swift */; };
+		24C2F0112C18BA2B008E533B /* Countries+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24C2F00B2C18BA2B008E533B /* Countries+CoreDataProperties.swift */; };
+		24C2F0122C18BA2B008E533B /* User_type+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24C2F00C2C18BA2B008E533B /* User_type+CoreDataClass.swift */; };
+		24C2F0132C18BA2B008E533B /* User_type+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24C2F00D2C18BA2B008E533B /* User_type+CoreDataProperties.swift */; };
+		24C2F0142C18BA2B008E533B /* Cities+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24C2F00E2C18BA2B008E533B /* Cities+CoreDataClass.swift */; };
+		24C2F0152C18BA2B008E533B /* Cities+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24C2F00F2C18BA2B008E533B /* Cities+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,6 +70,12 @@
 		2445824A2C0F76CB008A6FBB /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		2445824C2C0F76F2008A6FBB /* CustomViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomViews.swift; sourceTree = "<group>"; };
 		2445824E2C0F770C008A6FBB /* LogginedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogginedView.swift; sourceTree = "<group>"; };
+		24C2F00A2C18BA2B008E533B /* Countries+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Countries+CoreDataClass.swift"; sourceTree = "<group>"; };
+		24C2F00B2C18BA2B008E533B /* Countries+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Countries+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		24C2F00C2C18BA2B008E533B /* User_type+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User_type+CoreDataClass.swift"; sourceTree = "<group>"; };
+		24C2F00D2C18BA2B008E533B /* User_type+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User_type+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		24C2F00E2C18BA2B008E533B /* Cities+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Cities+CoreDataClass.swift"; sourceTree = "<group>"; };
+		24C2F00F2C18BA2B008E533B /* Cities+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Cities+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,19 +126,15 @@
 		244582102C0F737B008A6FBB /* login3 */ = {
 			isa = PBXGroup;
 			children = (
-				244582422C0F74CA008A6FBB /* User+CoreDataClass.swift */,
-				244582432C0F74CA008A6FBB /* User+CoreDataProperties.swift */,
-				244582402C0F74CA008A6FBB /* User_password+CoreDataClass.swift */,
-				244582412C0F74CA008A6FBB /* User_password+CoreDataProperties.swift */,
-				244582112C0F737B008A6FBB /* login3App.swift */,
-				2445824C2C0F76F2008A6FBB /* CustomViews.swift */,
-				244582132C0F737B008A6FBB /* ContentView.swift */,
-				244582482C0F76AD008A6FBB /* LoginView.swift */,
+				24C2F0162C18BA5C008E533B /* CoreData */,
 				244582152C0F737E008A6FBB /* Assets.xcassets */,
+				244582132C0F737B008A6FBB /* ContentView.swift */,
+				2445824C2C0F76F2008A6FBB /* CustomViews.swift */,
+				244582112C0F737B008A6FBB /* login3App.swift */,
+				244582482C0F76AD008A6FBB /* LoginView.swift */,
+				2445824E2C0F770C008A6FBB /* LogginedView.swift */,
 				2445821A2C0F737E008A6FBB /* Persistence.swift */,
 				2445824A2C0F76CB008A6FBB /* SignUpView.swift */,
-				2445821C2C0F737E008A6FBB /* login3.xcdatamodeld */,
-				2445824E2C0F770C008A6FBB /* LogginedView.swift */,
 				244582172C0F737E008A6FBB /* Preview Content */,
 			);
 			path = login3;
@@ -155,6 +163,40 @@
 				244582332C0F737E008A6FBB /* login3UITestsLaunchTests.swift */,
 			);
 			path = login3UITests;
+			sourceTree = "<group>";
+		};
+		24C2F0162C18BA5C008E533B /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				2445821C2C0F737E008A6FBB /* login3.xcdatamodeld */,
+				24C2F0182C18BA86008E533B /* Properties */,
+				24C2F0172C18BA7D008E533B /* Class */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
+		24C2F0172C18BA7D008E533B /* Class */ = {
+			isa = PBXGroup;
+			children = (
+				24C2F00E2C18BA2B008E533B /* Cities+CoreDataClass.swift */,
+				24C2F00A2C18BA2B008E533B /* Countries+CoreDataClass.swift */,
+				244582422C0F74CA008A6FBB /* User+CoreDataClass.swift */,
+				244582402C0F74CA008A6FBB /* User_password+CoreDataClass.swift */,
+				24C2F00C2C18BA2B008E533B /* User_type+CoreDataClass.swift */,
+			);
+			path = Class;
+			sourceTree = "<group>";
+		};
+		24C2F0182C18BA86008E533B /* Properties */ = {
+			isa = PBXGroup;
+			children = (
+				24C2F00F2C18BA2B008E533B /* Cities+CoreDataProperties.swift */,
+				24C2F00B2C18BA2B008E533B /* Countries+CoreDataProperties.swift */,
+				244582432C0F74CA008A6FBB /* User+CoreDataProperties.swift */,
+				244582412C0F74CA008A6FBB /* User_password+CoreDataProperties.swift */,
+				24C2F00D2C18BA2B008E533B /* User_type+CoreDataProperties.swift */,
+			);
+			path = Properties;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -287,15 +329,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				24C2F0122C18BA2B008E533B /* User_type+CoreDataClass.swift in Sources */,
 				2445821B2C0F737E008A6FBB /* Persistence.swift in Sources */,
 				2445824F2C0F770C008A6FBB /* LogginedView.swift in Sources */,
 				244582142C0F737B008A6FBB /* ContentView.swift in Sources */,
+				24C2F0142C18BA2B008E533B /* Cities+CoreDataClass.swift in Sources */,
 				244582472C0F74CA008A6FBB /* User+CoreDataProperties.swift in Sources */,
 				244582492C0F76AD008A6FBB /* LoginView.swift in Sources */,
+				24C2F0102C18BA2B008E533B /* Countries+CoreDataClass.swift in Sources */,
 				244582122C0F737B008A6FBB /* login3App.swift in Sources */,
+				24C2F0132C18BA2B008E533B /* User_type+CoreDataProperties.swift in Sources */,
 				244582452C0F74CA008A6FBB /* User_password+CoreDataProperties.swift in Sources */,
 				2445824B2C0F76CB008A6FBB /* SignUpView.swift in Sources */,
 				2445821E2C0F737E008A6FBB /* login3.xcdatamodeld in Sources */,
+				24C2F0112C18BA2B008E533B /* Countries+CoreDataProperties.swift in Sources */,
+				24C2F0152C18BA2B008E533B /* Cities+CoreDataProperties.swift in Sources */,
 				244582442C0F74CA008A6FBB /* User_password+CoreDataClass.swift in Sources */,
 				2445824D2C0F76F3008A6FBB /* CustomViews.swift in Sources */,
 				244582462C0F74CA008A6FBB /* User+CoreDataClass.swift in Sources */,
