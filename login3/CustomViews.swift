@@ -19,8 +19,8 @@ struct ContencikView: View {
     
     var body: some View {
         VStack {
-            
-            CustomPicker(placeHolder: "Select an option", imageName: "list.bullet", bColor: "gray", tOpacity: 1.0, selection: $selectedOption, options: options)
+    
+//            CustomPicker(placeHolder: "Select an option", imageName: "list.bullet", bColor: "gray", tOpacity: 1.0, selection: $selectedOption, options: options)
             CustomTextField(placeHolder: "Name", imageName: "person", bColor: "gray", tOpacity: 1.0, value: $selectedOption)
         }
         .padding()
