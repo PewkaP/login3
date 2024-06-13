@@ -2,7 +2,7 @@ import SwiftUI
 import CoreData
 
 struct SignUpView: View {
-    // MARK: - Properties
+
     
     // Core Data context
     @Environment(\.managedObjectContext) private var viewContext
@@ -12,6 +12,10 @@ struct SignUpView: View {
         sortDescriptors: [NSSortDescriptor(keyPath: \User.iduser, ascending: true)],
         animation: .default)
     private var users: FetchedResults<User>
+    @FetchRequest(
+        sortDescriptors: [NSSortDescriptor(keyPath: \Cities.idcity, ascending: true)],
+        animation: .default)
+    private var cities: FetchedResults<Cities>
 
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \User_password.iduser_password, ascending: true)],
@@ -29,10 +33,11 @@ struct SignUpView: View {
     @State private var password: String = ""
     @State private var cpassword: String = ""
     @State private var userID: Int32 = 0
+    @State private var cityID: Int32?
     @State private var registrationSuccess = false
     @State private var shouldShowLoginAlert: Bool = false
     
-    // MARK: - Body
+
     var body: some View {
         NavigationView {
             ScrollView {
@@ -77,6 +82,14 @@ struct SignUpView: View {
                                 CustomTextField(placeHolder: "Phone number", imageName: "phone.fill", bColor: "textColor2", tOpacity: 1.0, value: $phonenumber)
                                 CustomTextField(placeHolder: "Street", imageName: "house.fill", bColor: "textColor2", tOpacity: 1.0, value: $street)
                                 CustomTextField(placeHolder: "Zipcode", imageName: "mappin.square.fill", bColor: "textColor2", tOpacity: 1.0, value: $zipcode)
+                                CustomPicker(
+                                            placeHolder: "Wybierz opcję",
+                                            imageName: "arrowtriangle.down.circle",
+                                            bColor: Color.gray,
+                                            tOpacity: 0.5,
+                                            selection: $cityID,
+                                            options: cities
+                                        )
                                 CustomTextField(placeHolder: "Password", imageName: "lock", bColor: "textColor2", tOpacity: 1.0, value: $password)
                                 CustomTextField(placeHolder: "Confirm Password", imageName: "lock", bColor: "textColor2", tOpacity: 1.0, value: $cpassword)
                             }
@@ -91,15 +104,6 @@ struct SignUpView: View {
                                 .alert(isPresented: $shouldShowLoginAlert){
                                     Alert(title: Text("Sorry, something went wrong..."))
                                 }
-//                            NavigationLink(destination: LogginedView(userID: $userID), isActive: self.$registrationSuccess) {
-//                                CustomButton(title: "SIGN UP", bgColor: "color1")
-//                                    .onTapGesture {
-//                                        Register()
-//                                    }
-//                            }
-//                            .alert(isPresented: $shouldShowLoginAlert) {
-//                                Alert(title: Text("Email/Password incorrect"))
-//                            }
                         }
                     }
                 }
@@ -108,14 +112,14 @@ struct SignUpView: View {
     }
     
 
-    // MARK: - Methods
+
     
     // Register user
     private func Register() {
         shouldShowLoginAlert = false
         
         // Check if user already exists
-        if let user = users.first(where: { $0.email == email }) {
+        if (users.first(where: { $0.email == email }) != nil) {
             shouldShowLoginAlert = true
             print("user exist")
             return
@@ -139,7 +143,7 @@ struct SignUpView: View {
         newUser.phonenumber = Int64(phonenumber)!
         newUser.street = street
         newUser.zipcode = zipcode
-        newUser.fk_idcity = 1
+        newUser.fk_idcity = cityID!
         newUser.fk_idloyal_card = Int32(users.count+1)
         print("user: \(newUser.iduser) \(String(describing: newUser.name)) \(String(describing: newUser.lastname)) \(String(describing: newUser.email)) \(newUser.phonenumber) \(String(describing: newUser.street)) \(String(describing: newUser.zipcode)) \(newUser.fk_idloyal_card) ")
         // Save user
@@ -176,11 +180,9 @@ struct SignUpView: View {
     }
 }
 
-// MARK: - Preview
-#if DEBUG
+
 struct SignUpView_Previews: PreviewProvider {
     static var previews: some View {
         SignUpView()
     }
 }
-#endif
