@@ -18,6 +18,7 @@ struct LogginedView: View {
 
     @State private var angle: Angle = Angle(degrees: 0)
     @Binding var userID: Int32
+    @State private var mapSuccess = false
     
     var body: some View {
         VStack{
@@ -29,6 +30,9 @@ struct LogginedView: View {
                     .onChanged { angle in
                               self.angle = angle
                     })
+                NavigationLink(destination: MapView(street: user.street ?? "", zipcode: user.zipcode ?? "")){
+                    CustomButton(title: "Zobacz lokalizacje", bgColor: "color1")
+                }
             }
         }
     }

@@ -14,7 +14,23 @@ import SwiftUI
     kontencik()
     
 }
+<<<<<<< HEAD
 
+=======
+struct ContencikView: View {
+    @State private var selectedOption = ""
+    let options = ["Option 1", "Option 2", "Option 3"]
+    
+    var body: some View {
+        VStack {
+    
+//            CustomPicker(placeHolder: "Select an option", imageName: "list.bullet", bColor: "gray", tOpacity: 1.0, selection: $selectedOption, options: options)
+            CustomTextField(placeHolder: "Name", imageName: "person", bColor: "gray", tOpacity: 1.0, value: $selectedOption)
+        }
+        .padding()
+    }
+}
+>>>>>>> origin/main
 struct CustomTextField: View {
     
     var placeHolder: String
