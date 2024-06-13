@@ -10,22 +10,11 @@ import SwiftUI
 
 
 #Preview {
-    CustomTextField(placeHolder: "lorem", imageName: "person.fill", bColor: "textColor1", tOpacity: 1.0, value: .constant(""))
+//    CustomTextField(placeHolder: "lorem", imageName: "person.fill", bColor: "textColor1", tOpacity: 1.0, value: .constant(""))
+    kontencik()
     
 }
-struct ContencikView: View {
-    @State private var selectedOption = ""
-    let options = ["Option 1", "Option 2", "Option 3"]
-    
-    var body: some View {
-        VStack {
-            
-            CustomPicker(placeHolder: "Select an option", imageName: "list.bullet", bColor: "gray", tOpacity: 1.0, selection: $selectedOption, options: options)
-            CustomTextField(placeHolder: "Name", imageName: "person", bColor: "gray", tOpacity: 1.0, value: $selectedOption)
-        }
-        .padding()
-    }
-}
+
 struct CustomTextField: View {
     
     var placeHolder: String
@@ -92,3 +81,57 @@ struct CustomButton: View {
     }
 }
 
+
+
+
+struct CustomPicker: View {
+    
+    var placeHolder: String
+    var imageName: String
+    var bColor: Color
+    var tOpacity: Double
+    @Binding var selection: String
+    var options: [String]
+    
+    var body: some View{
+        HStack{
+            
+            Image(systemName: imageName)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 20, height:20)
+                .padding(.leading, 20)
+            
+            Picker(selection: $selection, label: Text(placeHolder).foregroundColor(selection.isEmpty ? .gray : .primary)) {
+                ForEach(options, id: \.self) { option in
+                    Text(option).tag(option)
+                }
+            }
+            .font(.system(size: 20))
+            .padding(.leading,12)
+            .frame(height: 45)
+            .overlay(
+                RoundedRectangle(cornerRadius: 10)
+                    .stroke(bColor.opacity(tOpacity), lineWidth: 1)
+            )
+            .padding(.horizontal,20)
+        }
+    }
+}
+
+struct kontencik: View {
+    
+    @State private var selectedOption = ""
+    let options = ["Opcja 1", "Opcja 2", "Opcja 3"]
+    
+    var body: some View {
+        CustomPicker(
+            placeHolder: "Wybierz opcję",
+            imageName: "arrowtriangle.down.circle",
+            bColor: Color.gray,
+            tOpacity: 0.5,
+            selection: $selectedOption,
+            options: options
+        )
+    }
+}
